@@ -1,0 +1,27 @@
+#!/bin/bash
+set -e
+
+SRC_DIR=~/src/fancy_tools
+
+if [ ! -d "$SRC_DIR" ]; then
+    echo "Erreur : dépôt introuvable. Lance d'abord install.sh"
+    exit 1
+fi
+
+cd "$SRC_DIR"
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$CURRENT_BRANCH" != "main" ]; then
+    echo "Passage sur la branche main..."
+    git checkout main
+fi
+
+echo "Récupération des mises à jour..."
+git pull origin main
+
+mkdir -p ~/bin
+cp "$SRC_DIR/bin/updateFancyTools" ~/bin/updateFancyTools
+chmod +x ~/bin/updateFancyTools
+
+echo "Mise à jour terminée !"
+
